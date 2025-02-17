@@ -1,0 +1,21 @@
+[package]
+name = "wasm_vfs"
+version = "0.1.0"
+edition.workspace = true
+rust-version.workspace = true
+
+[dependencies]
+wit-bindgen-rt = { version = "0.39.0", features = ["bitflags"] }
+vfs = { path = "../vfs" }
+
+[profile.release]
+codegen-units = 1
+opt-level = "s"
+debug = false
+strip = true
+lto = true
+
+[package.metadata.component]
+package = "junkyard-vfs:wasm-local-fs"
+
+[package.metadata.component.dependencies]

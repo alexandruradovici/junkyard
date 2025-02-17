@@ -1,0 +1,26 @@
+[workspace]
+members = [
+    "packages/filesystem/vfs",
+    "packages/filesystem/local_fs",
+    "packages/wasm",
+    "packages/filesystem/wasm_local_fs",
+    "packages/filesystem/wasm_vfs",
+]
+resolver = "2"
+
+[workspace.package]
+edition = "2021"
+rust-version = "1.81"
+
+[package]
+name = "junkyard"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+anyhow = "1.0.95"
+cursive = { version = "0.21.1", features = ["toml"] }
+cursive_table_view = "0.15.0"
+vfs = { path = "packages/filesystem/vfs" }
+local_fs = { path = "packages/filesystem/local_fs" }
+wasm = { path = "packages/wasm" }
