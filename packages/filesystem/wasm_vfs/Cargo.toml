@@ -6,7 +6,6 @@ rust-version.workspace = true
 
 [dependencies]
 wit-bindgen-rt = { version = "0.39.0", features = ["bitflags"] }
-vfs = { path = "../vfs" }
 
 [profile.release]
 codegen-units = 1

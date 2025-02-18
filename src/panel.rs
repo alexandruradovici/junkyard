@@ -45,7 +45,7 @@ impl TableViewItem<Data> for File {
     fn to_column(&self, column: Data) -> String {
         match column {
             Data::Name => self.name.clone(),
-            Data::Kind => format!("{}", self.kind),
+            Data::Kind => format!("{:?}", self.kind),
             Data::Len => format!("{}", self.len),
         }
     }
@@ -67,12 +67,12 @@ fn list_files(provider: &dyn Vfs, path: &AbsolutePath) -> VfsResult<Vec<File>> {
     let mut files = entries
         .into_iter()
         .map(|entry| {
-            let (kind, size) = if let Ok(stat) = provider.stat(entry.path()) {
+            let (kind, size) = if let Ok(stat) = provider.stat(&entry) {
                 (stat.kind, stat.size)
             } else {
                 (Kind::Unknown, 0)
             };
-            File::new(entry.name().into(), entry.path().clone(), kind, size)
+            File::new(entry.name().into(), entry, kind, size)
         })
         .collect::<Vec<_>>();
     if !path.is_root() {

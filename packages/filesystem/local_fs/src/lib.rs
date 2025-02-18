@@ -1,6 +1,6 @@
 use file::LocalFile;
 use std::fs;
-use vfs::{AbsolutePath, DirEntry, File, Kind, OpenOptions, Stat, Vfs, VfsResult};
+use vfs::{AbsolutePath, File, Kind, OpenOptions, Stat, Vfs, VfsResult};
 
 mod file;
 
@@ -15,14 +15,15 @@ impl Vfs for LocalFileSystem {
             .read(open_options.read)
             .truncate(open_options.truncate)
             .write(open_options.write)
-            .open(path.as_str())?;
+            .open(path.as_str())
+            .map_err(|e| e.to_string())?;
         Ok(Box::new(LocalFile(f)))
     }
     fn unlink(&self, _path: &AbsolutePath) -> VfsResult<()> {
         todo!()
     }
     fn stat(&self, path: &AbsolutePath) -> VfsResult<Stat> {
-        let data = fs::metadata(path.as_str())?;
+        let data = fs::metadata(path.as_str()).map_err(|e| e.to_string())?;
         Ok(Stat {
             kind: if data.is_dir() {
                 Kind::Folder
@@ -38,28 +39,26 @@ impl Vfs for LocalFileSystem {
     }
 
     // Folders
-    fn read_dir(&self, path: &AbsolutePath) -> VfsResult<Vec<DirEntry>> {
-        let entries = fs::read_dir(path.as_str())?;
+    fn read_dir(&self, path: &AbsolutePath) -> VfsResult<Vec<AbsolutePath>> {
+        let entries = fs::read_dir(path.as_str()).map_err(|e| e.to_string())?;
         let mut files = vec![];
         for entry in entries {
             if let Ok(entry) = entry {
-                files.push(DirEntry::new(AbsolutePath::new(
-                    entry.path().to_string_lossy(),
-                )));
+                files.push(AbsolutePath::new(entry.path().to_string_lossy()));
             }
         }
         Ok(files)
     }
     fn create_dir(&self, path: &AbsolutePath) -> VfsResult<()> {
-        Ok(fs::create_dir(path.as_str())?)
+        Ok(fs::create_dir(path.as_str()).map_err(|e| e.to_string())?)
     }
     fn create_dir_all(&self, path: &AbsolutePath) -> VfsResult<()> {
-        Ok(fs::create_dir_all(path.as_str())?)
+        Ok(fs::create_dir_all(path.as_str()).map_err(|e| e.to_string())?)
     }
 
     // All
     fn rename(&self, from: &AbsolutePath, to: &AbsolutePath) -> VfsResult<()> {
-        Ok(fs::rename(from.as_str(), to.as_str())?)
+        Ok(fs::rename(from.as_str(), to.as_str()).map_err(|e| e.to_string())?)
     }
 }
 
@@ -73,7 +72,7 @@ mod tests {
         os::unix::fs::PermissionsExt,
     };
 
-    use vfs::{DirEntry, Vfs};
+    use vfs::{AbsolutePath, Vfs};
 
     fn dir_to_vec(mut dir: fs::ReadDir) -> VfsResult<Vec<fs::DirEntry>> {
         let mut vec = vec![];
@@ -86,7 +85,7 @@ mod tests {
         Ok(vec)
     }
 
-    fn read_folder(folder: impl AsRef<str>) -> (Vec<DirEntry>, Vec<fs::DirEntry>) {
+    fn read_folder(folder: impl AsRef<str>) -> (Vec<AbsolutePath>, Vec<fs::DirEntry>) {
         let local_vfs = LocalFileSystem {};
         let path = folder.as_ref().into();
 

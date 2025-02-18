@@ -6,6 +6,7 @@ rust-version.workspace = true
 
 [dependencies]
 vfs = { path = "../filesystem/vfs" }
+wasm_vfs_api = { path = "../wasm_vfs_api" }
 anyhow = "1.0.95"
 wasmtime = { version = "29.0.1", default-features = false, features = ["runtime", "component-model", "cranelift"] }
 wasmtime-wasi = "29.0.1"

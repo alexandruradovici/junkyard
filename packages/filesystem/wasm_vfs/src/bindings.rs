@@ -3,15 +3,250 @@
 //   * runtime_path: "wit_bindgen_rt"
 #[rustfmt::skip]
 #[allow(dead_code, clippy::all)]
+pub mod junkyard_vfs {
+    pub mod vfs_plugin {
+        #[allow(dead_code, clippy::all)]
+        pub mod vfs_host {
+            #[used]
+            #[doc(hidden)]
+            static __FORCE_SECTION_REF: fn() = super::super::super::__link_custom_section_describing_imports;
+            use super::super::super::_rt;
+            #[derive(Debug)]
+            #[repr(transparent)]
+            pub struct AbsolutePath {
+                handle: _rt::Resource<AbsolutePath>,
+            }
+            impl AbsolutePath {
+                #[doc(hidden)]
+                pub unsafe fn from_handle(handle: u32) -> Self {
+                    Self {
+                        handle: _rt::Resource::from_handle(handle),
+                    }
+                }
+                #[doc(hidden)]
+                pub fn take_handle(&self) -> u32 {
+                    _rt::Resource::take_handle(&self.handle)
+                }
+                #[doc(hidden)]
+                pub fn handle(&self) -> u32 {
+                    _rt::Resource::handle(&self.handle)
+                }
+            }
+            unsafe impl _rt::WasmResource for AbsolutePath {
+                #[inline]
+                unsafe fn drop(_handle: u32) {
+                    #[cfg(not(target_arch = "wasm32"))]
+                    unreachable!();
+                    #[cfg(target_arch = "wasm32")]
+                    {
+                        #[link(wasm_import_module = "junkyard-vfs:vfs-plugin/vfs-host")]
+                        extern "C" {
+                            #[link_name = "[resource-drop]absolute-path"]
+                            fn drop(_: u32);
+                        }
+                        drop(_handle);
+                    }
+                }
+            }
+            impl AbsolutePath {
+                #[allow(unused_unsafe, clippy::all)]
+                pub fn components(&self) -> _rt::Vec<_rt::String> {
+                    unsafe {
+                        #[repr(align(4))]
+                        struct RetArea([::core::mem::MaybeUninit<u8>; 8]);
+                        let mut ret_area = RetArea(
+                            [::core::mem::MaybeUninit::uninit(); 8],
+                        );
+                        let ptr0 = ret_area.0.as_mut_ptr().cast::<u8>();
+                        #[cfg(target_arch = "wasm32")]
+                        #[link(wasm_import_module = "junkyard-vfs:vfs-plugin/vfs-host")]
+                        extern "C" {
+                            #[link_name = "[method]absolute-path.components"]
+                            fn wit_import(_: i32, _: *mut u8);
+                        }
+                        #[cfg(not(target_arch = "wasm32"))]
+                        fn wit_import(_: i32, _: *mut u8) {
+                            unreachable!()
+                        }
+                        wit_import((self).handle() as i32, ptr0);
+                        let l1 = *ptr0.add(0).cast::<*mut u8>();
+                        let l2 = *ptr0.add(4).cast::<usize>();
+                        let base6 = l1;
+                        let len6 = l2;
+                        let mut result6 = _rt::Vec::with_capacity(len6);
+                        for i in 0..len6 {
+                            let base = base6.add(i * 8);
+                            let e6 = {
+                                let l3 = *base.add(0).cast::<*mut u8>();
+                                let l4 = *base.add(4).cast::<usize>();
+                                let len5 = l4;
+                                let bytes5 = _rt::Vec::from_raw_parts(
+                                    l3.cast(),
+                                    len5,
+                                    len5,
+                                );
+                                _rt::string_lift(bytes5)
+                            };
+                            result6.push(e6);
+                        }
+                        _rt::cabi_dealloc(base6, len6 * 8, 4);
+                        result6
+                    }
+                }
+            }
+            impl AbsolutePath {
+                #[allow(unused_unsafe, clippy::all)]
+                pub fn is_root(&self) -> bool {
+                    unsafe {
+                        #[cfg(target_arch = "wasm32")]
+                        #[link(wasm_import_module = "junkyard-vfs:vfs-plugin/vfs-host")]
+                        extern "C" {
+                            #[link_name = "[method]absolute-path.is-root"]
+                            fn wit_import(_: i32) -> i32;
+                        }
+                        #[cfg(not(target_arch = "wasm32"))]
+                        fn wit_import(_: i32) -> i32 {
+                            unreachable!()
+                        }
+                        let ret = wit_import((self).handle() as i32);
+                        _rt::bool_lift(ret as u8)
+                    }
+                }
+            }
+            impl AbsolutePath {
+                #[allow(unused_unsafe, clippy::all)]
+                pub fn parent(&self) -> AbsolutePath {
+                    unsafe {
+                        #[cfg(target_arch = "wasm32")]
+                        #[link(wasm_import_module = "junkyard-vfs:vfs-plugin/vfs-host")]
+                        extern "C" {
+                            #[link_name = "[method]absolute-path.parent"]
+                            fn wit_import(_: i32) -> i32;
+                        }
+                        #[cfg(not(target_arch = "wasm32"))]
+                        fn wit_import(_: i32) -> i32 {
+                            unreachable!()
+                        }
+                        let ret = wit_import((self).handle() as i32);
+                        AbsolutePath::from_handle(ret as u32)
+                    }
+                }
+            }
+            impl AbsolutePath {
+                #[allow(unused_unsafe, clippy::all)]
+                pub fn file_name(&self) -> _rt::String {
+                    unsafe {
+                        #[repr(align(4))]
+                        struct RetArea([::core::mem::MaybeUninit<u8>; 8]);
+                        let mut ret_area = RetArea(
+                            [::core::mem::MaybeUninit::uninit(); 8],
+                        );
+                        let ptr0 = ret_area.0.as_mut_ptr().cast::<u8>();
+                        #[cfg(target_arch = "wasm32")]
+                        #[link(wasm_import_module = "junkyard-vfs:vfs-plugin/vfs-host")]
+                        extern "C" {
+                            #[link_name = "[method]absolute-path.file-name"]
+                            fn wit_import(_: i32, _: *mut u8);
+                        }
+                        #[cfg(not(target_arch = "wasm32"))]
+                        fn wit_import(_: i32, _: *mut u8) {
+                            unreachable!()
+                        }
+                        wit_import((self).handle() as i32, ptr0);
+                        let l1 = *ptr0.add(0).cast::<*mut u8>();
+                        let l2 = *ptr0.add(4).cast::<usize>();
+                        let len3 = l2;
+                        let bytes3 = _rt::Vec::from_raw_parts(l1.cast(), len3, len3);
+                        _rt::string_lift(bytes3)
+                    }
+                }
+            }
+            impl AbsolutePath {
+                #[allow(unused_unsafe, clippy::all)]
+                pub fn path(&self) -> _rt::String {
+                    unsafe {
+                        #[repr(align(4))]
+                        struct RetArea([::core::mem::MaybeUninit<u8>; 8]);
+                        let mut ret_area = RetArea(
+                            [::core::mem::MaybeUninit::uninit(); 8],
+                        );
+                        let ptr0 = ret_area.0.as_mut_ptr().cast::<u8>();
+                        #[cfg(target_arch = "wasm32")]
+                        #[link(wasm_import_module = "junkyard-vfs:vfs-plugin/vfs-host")]
+                        extern "C" {
+                            #[link_name = "[method]absolute-path.path"]
+                            fn wit_import(_: i32, _: *mut u8);
+                        }
+                        #[cfg(not(target_arch = "wasm32"))]
+                        fn wit_import(_: i32, _: *mut u8) {
+                            unreachable!()
+                        }
+                        wit_import((self).handle() as i32, ptr0);
+                        let l1 = *ptr0.add(0).cast::<*mut u8>();
+                        let l2 = *ptr0.add(4).cast::<usize>();
+                        let len3 = l2;
+                        let bytes3 = _rt::Vec::from_raw_parts(l1.cast(), len3, len3);
+                        _rt::string_lift(bytes3)
+                    }
+                }
+            }
+            #[allow(unused_unsafe, clippy::all)]
+            pub fn create_absolute_path(s: &str) -> AbsolutePath {
+                unsafe {
+                    let vec0 = s;
+                    let ptr0 = vec0.as_ptr().cast::<u8>();
+                    let len0 = vec0.len();
+                    #[cfg(target_arch = "wasm32")]
+                    #[link(wasm_import_module = "junkyard-vfs:vfs-plugin/vfs-host")]
+                    extern "C" {
+                        #[link_name = "create-absolute-path"]
+                        fn wit_import(_: *mut u8, _: usize) -> i32;
+                    }
+                    #[cfg(not(target_arch = "wasm32"))]
+                    fn wit_import(_: *mut u8, _: usize) -> i32 {
+                        unreachable!()
+                    }
+                    let ret = wit_import(ptr0.cast_mut(), len0);
+                    AbsolutePath::from_handle(ret as u32)
+                }
+            }
+        }
+    }
+}
+#[rustfmt::skip]
+#[allow(dead_code, clippy::all)]
 pub mod exports {
     pub mod junkyard_vfs {
-        pub mod wasm_local_fs {
+        pub mod vfs_plugin {
             #[allow(dead_code, clippy::all)]
             pub mod vfs {
                 #[used]
                 #[doc(hidden)]
                 static __FORCE_SECTION_REF: fn() = super::super::super::super::__link_custom_section_describing_imports;
                 use super::super::super::super::_rt;
+                pub type AbsolutePath = super::super::super::super::junkyard_vfs::vfs_plugin::vfs_host::AbsolutePath;
+                #[derive(Clone, Copy)]
+                pub enum Seek {
+                    Start(u64),
+                    Current(i64),
+                    End(i64),
+                }
+                impl ::core::fmt::Debug for Seek {
+                    fn fmt(
+                        &self,
+                        f: &mut ::core::fmt::Formatter<'_>,
+                    ) -> ::core::fmt::Result {
+                        match self {
+                            Seek::Start(e) => {
+                                f.debug_tuple("Seek::Start").field(e).finish()
+                            }
+                            Seek::Current(e) => {
+                                f.debug_tuple("Seek::Current").field(e).finish()
+                            }
+                            Seek::End(e) => f.debug_tuple("Seek::End").field(e).finish(),
+                        }
+                    }
+                }
                 #[repr(u8)]
                 #[derive(Clone, Copy, Eq, Ord, PartialEq, PartialOrd)]
                 pub enum Kind {
@@ -63,6 +298,127 @@ pub mod exports {
                             .field("kind", &self.kind)
                             .field("size", &self.size)
                             .finish()
+                    }
+                }
+                #[derive(Debug)]
+                #[repr(transparent)]
+                pub struct File {
+                    handle: _rt::Resource<File>,
+                }
+                type _FileRep<T> = Option<T>;
+                impl File {
+                    /// Creates a new resource from the specified representation.
+                    ///
+                    /// This function will create a new resource handle by moving `val` onto
+                    /// the heap and then passing that heap pointer to the component model to
+                    /// create a handle. The owned handle is then returned as `File`.
+                    pub fn new<T: GuestFile>(val: T) -> Self {
+                        Self::type_guard::<T>();
+                        let val: _FileRep<T> = Some(val);
+                        let ptr: *mut _FileRep<T> = _rt::Box::into_raw(
+                            _rt::Box::new(val),
+                        );
+                        unsafe { Self::from_handle(T::_resource_new(ptr.cast())) }
+                    }
+                    /// Gets access to the underlying `T` which represents this resource.
+                    pub fn get<T: GuestFile>(&self) -> &T {
+                        let ptr = unsafe { &*self.as_ptr::<T>() };
+                        ptr.as_ref().unwrap()
+                    }
+                    /// Gets mutable access to the underlying `T` which represents this
+                    /// resource.
+                    pub fn get_mut<T: GuestFile>(&mut self) -> &mut T {
+                        let ptr = unsafe { &mut *self.as_ptr::<T>() };
+                        ptr.as_mut().unwrap()
+                    }
+                    /// Consumes this resource and returns the underlying `T`.
+                    pub fn into_inner<T: GuestFile>(self) -> T {
+                        let ptr = unsafe { &mut *self.as_ptr::<T>() };
+                        ptr.take().unwrap()
+                    }
+                    #[doc(hidden)]
+                    pub unsafe fn from_handle(handle: u32) -> Self {
+                        Self {
+                            handle: _rt::Resource::from_handle(handle),
+                        }
+                    }
+                    #[doc(hidden)]
+                    pub fn take_handle(&self) -> u32 {
+                        _rt::Resource::take_handle(&self.handle)
+                    }
+                    #[doc(hidden)]
+                    pub fn handle(&self) -> u32 {
+                        _rt::Resource::handle(&self.handle)
+                    }
+                    #[doc(hidden)]
+                    fn type_guard<T: 'static>() {
+                        use core::any::TypeId;
+                        static mut LAST_TYPE: Option<TypeId> = None;
+                        unsafe {
+                            assert!(! cfg!(target_feature = "atomics"));
+                            let id = TypeId::of::<T>();
+                            match LAST_TYPE {
+                                Some(ty) => {
+                                    assert!(
+                                        ty == id, "cannot use two types with this resource type"
+                                    )
+                                }
+                                None => LAST_TYPE = Some(id),
+                            }
+                        }
+                    }
+                    #[doc(hidden)]
+                    pub unsafe fn dtor<T: 'static>(handle: *mut u8) {
+                        Self::type_guard::<T>();
+                        let _ = _rt::Box::from_raw(handle as *mut _FileRep<T>);
+                    }
+                    fn as_ptr<T: GuestFile>(&self) -> *mut _FileRep<T> {
+                        File::type_guard::<T>();
+                        T::_resource_rep(self.handle()).cast()
+                    }
+                }
+                /// A borrowed version of [`File`] which represents a borrowed value
+                /// with the lifetime `'a`.
+                #[derive(Debug)]
+                #[repr(transparent)]
+                pub struct FileBorrow<'a> {
+                    rep: *mut u8,
+                    _marker: core::marker::PhantomData<&'a File>,
+                }
+                impl<'a> FileBorrow<'a> {
+                    #[doc(hidden)]
+                    pub unsafe fn lift(rep: usize) -> Self {
+                        Self {
+                            rep: rep as *mut u8,
+                            _marker: core::marker::PhantomData,
+                        }
+                    }
+                    /// Gets access to the underlying `T` in this resource.
+                    pub fn get<T: GuestFile>(&self) -> &T {
+                        let ptr = unsafe { &mut *self.as_ptr::<T>() };
+                        ptr.as_ref().unwrap()
+                    }
+                    fn as_ptr<T: 'static>(&self) -> *mut _FileRep<T> {
+                        File::type_guard::<T>();
+                        self.rep.cast()
+                    }
+                }
+                unsafe impl _rt::WasmResource for File {
+                    #[inline]
+                    unsafe fn drop(_handle: u32) {
+                        #[cfg(not(target_arch = "wasm32"))]
+                        unreachable!();
+                        #[cfg(target_arch = "wasm32")]
+                        {
+                            #[link(
+                                wasm_import_module = "[export]junkyard-vfs:vfs-plugin/vfs"
+                            )]
+                            extern "C" {
+                                #[link_name = "[resource-drop]file"]
+                                fn drop(_: u32);
+                            }
+                            drop(_handle);
+                        }
                     }
                 }
                 #[derive(Debug)]
@@ -176,7 +532,7 @@ pub mod exports {
                         #[cfg(target_arch = "wasm32")]
                         {
                             #[link(
-                                wasm_import_module = "[export]junkyard-vfs:wasm-local-fs/vfs"
+                                wasm_import_module = "[export]junkyard-vfs:vfs-plugin/vfs"
                             )]
                             extern "C" {
                                 #[link_name = "[resource-drop]filesystem"]
@@ -188,57 +544,208 @@ pub mod exports {
                 }
                 #[doc(hidden)]
                 #[allow(non_snake_case)]
-                pub unsafe fn _export_method_filesystem_read_dir_cabi<
-                    T: GuestFilesystem,
-                >(arg0: *mut u8, arg1: *mut u8, arg2: usize) -> *mut u8 {
+                pub unsafe fn _export_method_file_read_cabi<T: GuestFile>(
+                    arg0: *mut u8,
+                    arg1: *mut u8,
+                    arg2: usize,
+                ) -> *mut u8 {
                     #[cfg(target_arch = "wasm32")] _rt::run_ctors_once();
                     let len0 = arg2;
-                    let bytes0 = _rt::Vec::from_raw_parts(arg1.cast(), len0, len0);
-                    let result1 = T::read_dir(
-                        FilesystemBorrow::lift(arg0 as u32 as usize).get(),
-                        _rt::string_lift(bytes0),
+                    let result1 = T::read(
+                        FileBorrow::lift(arg0 as u32 as usize).get(),
+                        _rt::Vec::from_raw_parts(arg1.cast(), len0, len0),
                     );
                     let ptr2 = _RET_AREA.0.as_mut_ptr().cast::<u8>();
                     match result1 {
                         Ok(e) => {
                             *ptr2.add(0).cast::<u8>() = (0i32) as u8;
-                            let vec4 = e;
-                            let len4 = vec4.len();
-                            let layout4 = _rt::alloc::Layout::from_size_align_unchecked(
-                                vec4.len() * 8,
+                            *ptr2.add(8).cast::<i64>() = _rt::as_i64(e);
+                        }
+                        Err(e) => {
+                            *ptr2.add(0).cast::<u8>() = (1i32) as u8;
+                            let vec3 = (e.into_bytes()).into_boxed_slice();
+                            let ptr3 = vec3.as_ptr().cast::<u8>();
+                            let len3 = vec3.len();
+                            ::core::mem::forget(vec3);
+                            *ptr2.add(12).cast::<usize>() = len3;
+                            *ptr2.add(8).cast::<*mut u8>() = ptr3.cast_mut();
+                        }
+                    };
+                    ptr2
+                }
+                #[doc(hidden)]
+                #[allow(non_snake_case)]
+                pub unsafe fn __post_return_method_file_read<T: GuestFile>(
+                    arg0: *mut u8,
+                ) {
+                    let l0 = i32::from(*arg0.add(0).cast::<u8>());
+                    match l0 {
+                        0 => {}
+                        _ => {
+                            let l1 = *arg0.add(8).cast::<*mut u8>();
+                            let l2 = *arg0.add(12).cast::<usize>();
+                            _rt::cabi_dealloc(l1, l2, 1);
+                        }
+                    }
+                }
+                #[doc(hidden)]
+                #[allow(non_snake_case)]
+                pub unsafe fn _export_method_file_write_cabi<T: GuestFile>(
+                    arg0: *mut u8,
+                    arg1: *mut u8,
+                    arg2: usize,
+                ) -> *mut u8 {
+                    #[cfg(target_arch = "wasm32")] _rt::run_ctors_once();
+                    let len0 = arg2;
+                    let result1 = T::write(
+                        FileBorrow::lift(arg0 as u32 as usize).get(),
+                        _rt::Vec::from_raw_parts(arg1.cast(), len0, len0),
+                    );
+                    let ptr2 = _RET_AREA.0.as_mut_ptr().cast::<u8>();
+                    match result1 {
+                        Ok(e) => {
+                            *ptr2.add(0).cast::<u8>() = (0i32) as u8;
+                            *ptr2.add(8).cast::<i64>() = _rt::as_i64(e);
+                        }
+                        Err(e) => {
+                            *ptr2.add(0).cast::<u8>() = (1i32) as u8;
+                            let vec3 = (e.into_bytes()).into_boxed_slice();
+                            let ptr3 = vec3.as_ptr().cast::<u8>();
+                            let len3 = vec3.len();
+                            ::core::mem::forget(vec3);
+                            *ptr2.add(12).cast::<usize>() = len3;
+                            *ptr2.add(8).cast::<*mut u8>() = ptr3.cast_mut();
+                        }
+                    };
+                    ptr2
+                }
+                #[doc(hidden)]
+                #[allow(non_snake_case)]
+                pub unsafe fn __post_return_method_file_write<T: GuestFile>(
+                    arg0: *mut u8,
+                ) {
+                    let l0 = i32::from(*arg0.add(0).cast::<u8>());
+                    match l0 {
+                        0 => {}
+                        _ => {
+                            let l1 = *arg0.add(8).cast::<*mut u8>();
+                            let l2 = *arg0.add(12).cast::<usize>();
+                            _rt::cabi_dealloc(l1, l2, 1);
+                        }
+                    }
+                }
+                #[doc(hidden)]
+                #[allow(non_snake_case)]
+                pub unsafe fn _export_method_file_seek_cabi<T: GuestFile>(
+                    arg0: *mut u8,
+                    arg1: i32,
+                    arg2: i64,
+                ) -> *mut u8 {
+                    #[cfg(target_arch = "wasm32")] _rt::run_ctors_once();
+                    let v0 = match arg1 {
+                        0 => {
+                            let e0 = arg2 as u64;
+                            Seek::Start(e0)
+                        }
+                        1 => {
+                            let e0 = arg2;
+                            Seek::Current(e0)
+                        }
+                        n => {
+                            debug_assert_eq!(n, 2, "invalid enum discriminant");
+                            let e0 = arg2;
+                            Seek::End(e0)
+                        }
+                    };
+                    let result1 = T::seek(
+                        FileBorrow::lift(arg0 as u32 as usize).get(),
+                        v0,
+                    );
+                    let ptr2 = _RET_AREA.0.as_mut_ptr().cast::<u8>();
+                    match result1 {
+                        Ok(e) => {
+                            *ptr2.add(0).cast::<u8>() = (0i32) as u8;
+                            *ptr2.add(8).cast::<i64>() = _rt::as_i64(e);
+                        }
+                        Err(e) => {
+                            *ptr2.add(0).cast::<u8>() = (1i32) as u8;
+                            let vec3 = (e.into_bytes()).into_boxed_slice();
+                            let ptr3 = vec3.as_ptr().cast::<u8>();
+                            let len3 = vec3.len();
+                            ::core::mem::forget(vec3);
+                            *ptr2.add(12).cast::<usize>() = len3;
+                            *ptr2.add(8).cast::<*mut u8>() = ptr3.cast_mut();
+                        }
+                    };
+                    ptr2
+                }
+                #[doc(hidden)]
+                #[allow(non_snake_case)]
+                pub unsafe fn __post_return_method_file_seek<T: GuestFile>(
+                    arg0: *mut u8,
+                ) {
+                    let l0 = i32::from(*arg0.add(0).cast::<u8>());
+                    match l0 {
+                        0 => {}
+                        _ => {
+                            let l1 = *arg0.add(8).cast::<*mut u8>();
+                            let l2 = *arg0.add(12).cast::<usize>();
+                            _rt::cabi_dealloc(l1, l2, 1);
+                        }
+                    }
+                }
+                #[doc(hidden)]
+                #[allow(non_snake_case)]
+                pub unsafe fn _export_method_filesystem_read_dir_cabi<
+                    T: GuestFilesystem,
+                >(arg0: *mut u8, arg1: i32) -> *mut u8 {
+                    #[cfg(target_arch = "wasm32")] _rt::run_ctors_once();
+                    let handle0;
+                    let result1 = T::read_dir(
+                        FilesystemBorrow::lift(arg0 as u32 as usize).get(),
+                        {
+                            handle0 = super::super::super::super::junkyard_vfs::vfs_plugin::vfs_host::AbsolutePath::from_handle(
+                                arg1 as u32,
+                            );
+                            &handle0
+                        },
+                    );
+                    let ptr2 = _RET_AREA.0.as_mut_ptr().cast::<u8>();
+                    match result1 {
+                        Ok(e) => {
+                            *ptr2.add(0).cast::<u8>() = (0i32) as u8;
+                            let vec3 = e;
+                            let len3 = vec3.len();
+                            let layout3 = _rt::alloc::Layout::from_size_align_unchecked(
+                                vec3.len() * 4,
                                 4,
                             );
-                            let result4 = if layout4.size() != 0 {
-                                let ptr = _rt::alloc::alloc(layout4).cast::<u8>();
+                            let result3 = if layout3.size() != 0 {
+                                let ptr = _rt::alloc::alloc(layout3).cast::<u8>();
                                 if ptr.is_null() {
-                                    _rt::alloc::handle_alloc_error(layout4);
+                                    _rt::alloc::handle_alloc_error(layout3);
                                 }
                                 ptr
                             } else {
                                 ::core::ptr::null_mut()
                             };
-                            for (i, e) in vec4.into_iter().enumerate() {
-                                let base = result4.add(i * 8);
+                            for (i, e) in vec3.into_iter().enumerate() {
+                                let base = result3.add(i * 4);
                                 {
-                                    let vec3 = (e.into_bytes()).into_boxed_slice();
-                                    let ptr3 = vec3.as_ptr().cast::<u8>();
-                                    let len3 = vec3.len();
-                                    ::core::mem::forget(vec3);
-                                    *base.add(4).cast::<usize>() = len3;
-                                    *base.add(0).cast::<*mut u8>() = ptr3.cast_mut();
+                                    *base.add(0).cast::<i32>() = (e).take_handle() as i32;
                                 }
                             }
-                            *ptr2.add(8).cast::<usize>() = len4;
-                            *ptr2.add(4).cast::<*mut u8>() = result4;
+                            *ptr2.add(8).cast::<usize>() = len3;
+                            *ptr2.add(4).cast::<*mut u8>() = result3;
                         }
                         Err(e) => {
                             *ptr2.add(0).cast::<u8>() = (1i32) as u8;
-                            let vec5 = (e.into_bytes()).into_boxed_slice();
-                            let ptr5 = vec5.as_ptr().cast::<u8>();
-                            let len5 = vec5.len();
-                            ::core::mem::forget(vec5);
-                            *ptr2.add(8).cast::<usize>() = len5;
-                            *ptr2.add(4).cast::<*mut u8>() = ptr5.cast_mut();
+                            let vec4 = (e.into_bytes()).into_boxed_slice();
+                            let ptr4 = vec4.as_ptr().cast::<u8>();
+                            let len4 = vec4.len();
+                            ::core::mem::forget(vec4);
+                            *ptr2.add(8).cast::<usize>() = len4;
+                            *ptr2.add(4).cast::<*mut u8>() = ptr4.cast_mut();
                         }
                     };
                     ptr2
@@ -253,22 +760,14 @@ pub mod exports {
                         0 => {
                             let l1 = *arg0.add(4).cast::<*mut u8>();
                             let l2 = *arg0.add(8).cast::<usize>();
-                            let base5 = l1;
-                            let len5 = l2;
-                            for i in 0..len5 {
-                                let base = base5.add(i * 8);
-                                {
-                                    let l3 = *base.add(0).cast::<*mut u8>();
-                                    let l4 = *base.add(4).cast::<usize>();
-                                    _rt::cabi_dealloc(l3, l4, 1);
-                                }
-                            }
-                            _rt::cabi_dealloc(base5, len5 * 8, 4);
+                            let base3 = l1;
+                            let len3 = l2;
+                            _rt::cabi_dealloc(base3, len3 * 4, 4);
                         }
                         _ => {
-                            let l6 = *arg0.add(4).cast::<*mut u8>();
-                            let l7 = *arg0.add(8).cast::<usize>();
-                            _rt::cabi_dealloc(l6, l7, 1);
+                            let l4 = *arg0.add(4).cast::<*mut u8>();
+                            let l5 = *arg0.add(8).cast::<usize>();
+                            _rt::cabi_dealloc(l4, l5, 1);
                         }
                     }
                 }
@@ -276,15 +775,18 @@ pub mod exports {
                 #[allow(non_snake_case)]
                 pub unsafe fn _export_method_filesystem_stat_cabi<T: GuestFilesystem>(
                     arg0: *mut u8,
-                    arg1: *mut u8,
-                    arg2: usize,
+                    arg1: i32,
                 ) -> *mut u8 {
                     #[cfg(target_arch = "wasm32")] _rt::run_ctors_once();
-                    let len0 = arg2;
-                    let bytes0 = _rt::Vec::from_raw_parts(arg1.cast(), len0, len0);
+                    let handle0;
                     let result1 = T::stat(
                         FilesystemBorrow::lift(arg0 as u32 as usize).get(),
-                        _rt::string_lift(bytes0),
+                        {
+                            handle0 = super::super::super::super::junkyard_vfs::vfs_plugin::vfs_host::AbsolutePath::from_handle(
+                                arg1 as u32,
+                            );
+                            &handle0
+                        },
                     );
                     let ptr2 = _RET_AREA.0.as_mut_ptr().cast::<u8>();
                     match result1 {
@@ -323,6 +825,52 @@ pub mod exports {
                 }
                 #[doc(hidden)]
                 #[allow(non_snake_case)]
+                pub unsafe fn _export_method_filesystem_open_cabi<T: GuestFilesystem>(
+                    arg0: *mut u8,
+                    arg1: i32,
+                ) -> *mut u8 {
+                    #[cfg(target_arch = "wasm32")] _rt::run_ctors_once();
+                    let result0 = T::open(
+                        FilesystemBorrow::lift(arg0 as u32 as usize).get(),
+                        super::super::super::super::junkyard_vfs::vfs_plugin::vfs_host::AbsolutePath::from_handle(
+                            arg1 as u32,
+                        ),
+                    );
+                    let ptr1 = _RET_AREA.0.as_mut_ptr().cast::<u8>();
+                    match result0 {
+                        Ok(e) => {
+                            *ptr1.add(0).cast::<u8>() = (0i32) as u8;
+                            *ptr1.add(4).cast::<i32>() = (e).take_handle() as i32;
+                        }
+                        Err(e) => {
+                            *ptr1.add(0).cast::<u8>() = (1i32) as u8;
+                            let vec2 = (e.into_bytes()).into_boxed_slice();
+                            let ptr2 = vec2.as_ptr().cast::<u8>();
+                            let len2 = vec2.len();
+                            ::core::mem::forget(vec2);
+                            *ptr1.add(8).cast::<usize>() = len2;
+                            *ptr1.add(4).cast::<*mut u8>() = ptr2.cast_mut();
+                        }
+                    };
+                    ptr1
+                }
+                #[doc(hidden)]
+                #[allow(non_snake_case)]
+                pub unsafe fn __post_return_method_filesystem_open<T: GuestFilesystem>(
+                    arg0: *mut u8,
+                ) {
+                    let l0 = i32::from(*arg0.add(0).cast::<u8>());
+                    match l0 {
+                        0 => {}
+                        _ => {
+                            let l1 = *arg0.add(4).cast::<*mut u8>();
+                            let l2 = *arg0.add(8).cast::<usize>();
+                            _rt::cabi_dealloc(l1, l2, 1);
+                        }
+                    }
+                }
+                #[doc(hidden)]
+                #[allow(non_snake_case)]
                 pub unsafe fn _export_init_cabi<T: Guest>() -> *mut u8 {
                     #[cfg(target_arch = "wasm32")] _rt::run_ctors_once();
                     let result0 = T::init();
@@ -339,8 +887,58 @@ pub mod exports {
                     ptr1
                 }
                 pub trait Guest {
+                    type File: GuestFile;
                     type Filesystem: GuestFilesystem;
                     fn init() -> Result<Filesystem, ()>;
+                }
+                pub trait GuestFile: 'static {
+                    #[doc(hidden)]
+                    unsafe fn _resource_new(val: *mut u8) -> u32
+                    where
+                        Self: Sized,
+                    {
+                        #[cfg(not(target_arch = "wasm32"))]
+                        {
+                            let _ = val;
+                            unreachable!();
+                        }
+                        #[cfg(target_arch = "wasm32")]
+                        {
+                            #[link(
+                                wasm_import_module = "[export]junkyard-vfs:vfs-plugin/vfs"
+                            )]
+                            extern "C" {
+                                #[link_name = "[resource-new]file"]
+                                fn new(_: *mut u8) -> u32;
+                            }
+                            new(val)
+                        }
+                    }
+                    #[doc(hidden)]
+                    fn _resource_rep(handle: u32) -> *mut u8
+                    where
+                        Self: Sized,
+                    {
+                        #[cfg(not(target_arch = "wasm32"))]
+                        {
+                            let _ = handle;
+                            unreachable!();
+                        }
+                        #[cfg(target_arch = "wasm32")]
+                        {
+                            #[link(
+                                wasm_import_module = "[export]junkyard-vfs:vfs-plugin/vfs"
+                            )]
+                            extern "C" {
+                                #[link_name = "[resource-rep]file"]
+                                fn rep(_: u32) -> *mut u8;
+                            }
+                            unsafe { rep(handle) }
+                        }
+                    }
+                    fn read(&self, data: _rt::Vec<u8>) -> Result<u64, _rt::String>;
+                    fn write(&self, data: _rt::Vec<u8>) -> Result<u64, _rt::String>;
+                    fn seek(&self, s: Seek) -> Result<u64, _rt::String>;
                 }
                 pub trait GuestFilesystem: 'static {
                     #[doc(hidden)]
@@ -356,7 +954,7 @@ pub mod exports {
                         #[cfg(target_arch = "wasm32")]
                         {
                             #[link(
-                                wasm_import_module = "[export]junkyard-vfs:wasm-local-fs/vfs"
+                                wasm_import_module = "[export]junkyard-vfs:vfs-plugin/vfs"
                             )]
                             extern "C" {
                                 #[link_name = "[resource-new]filesystem"]
@@ -378,7 +976,7 @@ pub mod exports {
                         #[cfg(target_arch = "wasm32")]
                         {
                             #[link(
-                                wasm_import_module = "[export]junkyard-vfs:wasm-local-fs/vfs"
+                                wasm_import_module = "[export]junkyard-vfs:vfs-plugin/vfs"
                             )]
                             extern "C" {
                                 #[link_name = "[resource-rep]filesystem"]
@@ -389,50 +987,93 @@ pub mod exports {
                     }
                     fn read_dir(
                         &self,
-                        path: _rt::String,
-                    ) -> Result<_rt::Vec<_rt::String>, _rt::String>;
-                    fn stat(&self, path: _rt::String) -> Result<Stat, _rt::String>;
+                        path: &AbsolutePath,
+                    ) -> Result<_rt::Vec<AbsolutePath>, _rt::String>;
+                    fn stat(&self, path: &AbsolutePath) -> Result<Stat, _rt::String>;
+                    fn open(&self, path: AbsolutePath) -> Result<File, _rt::String>;
                 }
                 #[doc(hidden)]
                 #[macro_export]
-                macro_rules! __export_junkyard_vfs_wasm_local_fs_vfs_cabi {
+                macro_rules! __export_junkyard_vfs_vfs_plugin_vfs_cabi {
                     ($ty:ident with_types_in $($path_to_types:tt)*) => {
                         const _ : () = { #[export_name =
-                        "junkyard-vfs:wasm-local-fs/vfs#[method]filesystem.read-dir"]
-                        unsafe extern "C" fn export_method_filesystem_read_dir(arg0 : *
-                        mut u8, arg1 : * mut u8, arg2 : usize,) -> * mut u8 {
-                        $($path_to_types)*::
+                        "junkyard-vfs:vfs-plugin/vfs#[method]file.read"] unsafe extern
+                        "C" fn export_method_file_read(arg0 : * mut u8, arg1 : * mut u8,
+                        arg2 : usize,) -> * mut u8 { $($path_to_types)*::
+                        _export_method_file_read_cabi::<<$ty as $($path_to_types)*::
+                        Guest >::File > (arg0, arg1, arg2) } #[export_name =
+                        "cabi_post_junkyard-vfs:vfs-plugin/vfs#[method]file.read"] unsafe
+                        extern "C" fn _post_return_method_file_read(arg0 : * mut u8,) {
+                        $($path_to_types)*:: __post_return_method_file_read::<<$ty as
+                        $($path_to_types)*:: Guest >::File > (arg0) } #[export_name =
+                        "junkyard-vfs:vfs-plugin/vfs#[method]file.write"] unsafe extern
+                        "C" fn export_method_file_write(arg0 : * mut u8, arg1 : * mut u8,
+                        arg2 : usize,) -> * mut u8 { $($path_to_types)*::
+                        _export_method_file_write_cabi::<<$ty as $($path_to_types)*::
+                        Guest >::File > (arg0, arg1, arg2) } #[export_name =
+                        "cabi_post_junkyard-vfs:vfs-plugin/vfs#[method]file.write"]
+                        unsafe extern "C" fn _post_return_method_file_write(arg0 : * mut
+                        u8,) { $($path_to_types)*::
+                        __post_return_method_file_write::<<$ty as $($path_to_types)*::
+                        Guest >::File > (arg0) } #[export_name =
+                        "junkyard-vfs:vfs-plugin/vfs#[method]file.seek"] unsafe extern
+                        "C" fn export_method_file_seek(arg0 : * mut u8, arg1 : i32, arg2
+                        : i64,) -> * mut u8 { $($path_to_types)*::
+                        _export_method_file_seek_cabi::<<$ty as $($path_to_types)*::
+                        Guest >::File > (arg0, arg1, arg2) } #[export_name =
+                        "cabi_post_junkyard-vfs:vfs-plugin/vfs#[method]file.seek"] unsafe
+                        extern "C" fn _post_return_method_file_seek(arg0 : * mut u8,) {
+                        $($path_to_types)*:: __post_return_method_file_seek::<<$ty as
+                        $($path_to_types)*:: Guest >::File > (arg0) } #[export_name =
+                        "junkyard-vfs:vfs-plugin/vfs#[method]filesystem.read-dir"] unsafe
+                        extern "C" fn export_method_filesystem_read_dir(arg0 : * mut u8,
+                        arg1 : i32,) -> * mut u8 { $($path_to_types)*::
                         _export_method_filesystem_read_dir_cabi::<<$ty as
-                        $($path_to_types)*:: Guest >::Filesystem > (arg0, arg1, arg2) }
+                        $($path_to_types)*:: Guest >::Filesystem > (arg0, arg1) }
                         #[export_name =
-                        "cabi_post_junkyard-vfs:wasm-local-fs/vfs#[method]filesystem.read-dir"]
+                        "cabi_post_junkyard-vfs:vfs-plugin/vfs#[method]filesystem.read-dir"]
                         unsafe extern "C" fn _post_return_method_filesystem_read_dir(arg0
                         : * mut u8,) { $($path_to_types)*::
                         __post_return_method_filesystem_read_dir::<<$ty as
                         $($path_to_types)*:: Guest >::Filesystem > (arg0) } #[export_name
-                        = "junkyard-vfs:wasm-local-fs/vfs#[method]filesystem.stat"]
-                        unsafe extern "C" fn export_method_filesystem_stat(arg0 : * mut
-                        u8, arg1 : * mut u8, arg2 : usize,) -> * mut u8 {
-                        $($path_to_types)*:: _export_method_filesystem_stat_cabi::<<$ty
-                        as $($path_to_types)*:: Guest >::Filesystem > (arg0, arg1, arg2)
-                        } #[export_name =
-                        "cabi_post_junkyard-vfs:wasm-local-fs/vfs#[method]filesystem.stat"]
+                        = "junkyard-vfs:vfs-plugin/vfs#[method]filesystem.stat"] unsafe
+                        extern "C" fn export_method_filesystem_stat(arg0 : * mut u8, arg1
+                        : i32,) -> * mut u8 { $($path_to_types)*::
+                        _export_method_filesystem_stat_cabi::<<$ty as
+                        $($path_to_types)*:: Guest >::Filesystem > (arg0, arg1) }
+                        #[export_name =
+                        "cabi_post_junkyard-vfs:vfs-plugin/vfs#[method]filesystem.stat"]
                         unsafe extern "C" fn _post_return_method_filesystem_stat(arg0 : *
                         mut u8,) { $($path_to_types)*::
                         __post_return_method_filesystem_stat::<<$ty as
                         $($path_to_types)*:: Guest >::Filesystem > (arg0) } #[export_name
-                        = "junkyard-vfs:wasm-local-fs/vfs#init"] unsafe extern "C" fn
+                        = "junkyard-vfs:vfs-plugin/vfs#[method]filesystem.open"] unsafe
+                        extern "C" fn export_method_filesystem_open(arg0 : * mut u8, arg1
+                        : i32,) -> * mut u8 { $($path_to_types)*::
+                        _export_method_filesystem_open_cabi::<<$ty as
+                        $($path_to_types)*:: Guest >::Filesystem > (arg0, arg1) }
+                        #[export_name =
+                        "cabi_post_junkyard-vfs:vfs-plugin/vfs#[method]filesystem.open"]
+                        unsafe extern "C" fn _post_return_method_filesystem_open(arg0 : *
+                        mut u8,) { $($path_to_types)*::
+                        __post_return_method_filesystem_open::<<$ty as
+                        $($path_to_types)*:: Guest >::Filesystem > (arg0) } #[export_name
+                        = "junkyard-vfs:vfs-plugin/vfs#init"] unsafe extern "C" fn
                         export_init() -> * mut u8 { $($path_to_types)*::
                         _export_init_cabi::<$ty > () } const _ : () = { #[doc(hidden)]
-                        #[export_name =
-                        "junkyard-vfs:wasm-local-fs/vfs#[dtor]filesystem"]
+                        #[export_name = "junkyard-vfs:vfs-plugin/vfs#[dtor]file"]
+                        #[allow(non_snake_case)] unsafe extern "C" fn dtor(rep : * mut
+                        u8) { $($path_to_types)*:: File::dtor::< <$ty as
+                        $($path_to_types)*:: Guest >::File > (rep) } }; const _ : () = {
+                        #[doc(hidden)] #[export_name =
+                        "junkyard-vfs:vfs-plugin/vfs#[dtor]filesystem"]
                         #[allow(non_snake_case)] unsafe extern "C" fn dtor(rep : * mut
                         u8) { $($path_to_types)*:: Filesystem::dtor::< <$ty as
                         $($path_to_types)*:: Guest >::Filesystem > (rep) } }; };
                     };
                 }
                 #[doc(hidden)]
-                pub use __export_junkyard_vfs_wasm_local_fs_vfs_cabi;
+                pub use __export_junkyard_vfs_vfs_plugin_vfs_cabi;
                 #[repr(align(8))]
                 struct _RetArea([::core::mem::MaybeUninit<u8>; 24]);
                 static mut _RET_AREA: _RetArea = _RetArea(
@@ -518,12 +1159,8 @@ mod _rt {
             }
         }
     }
-    pub use alloc_crate::boxed::Box;
-    #[cfg(target_arch = "wasm32")]
-    pub fn run_ctors_once() {
-        wit_bindgen_rt::run_ctors_once();
-    }
     pub use alloc_crate::vec::Vec;
+    pub use alloc_crate::string::String;
     pub unsafe fn string_lift(bytes: Vec<u8>) -> String {
         if cfg!(debug_assertions) {
             String::from_utf8(bytes).unwrap()
@@ -531,7 +1168,6 @@ mod _rt {
             String::from_utf8_unchecked(bytes)
         }
     }
-    pub use alloc_crate::alloc;
     pub unsafe fn cabi_dealloc(ptr: *mut u8, size: usize, align: usize) {
         if size == 0 {
             return;
@@ -539,7 +1175,22 @@ mod _rt {
         let layout = alloc::Layout::from_size_align_unchecked(size, align);
         alloc::dealloc(ptr, layout);
     }
-    pub use alloc_crate::string::String;
+    pub unsafe fn bool_lift(val: u8) -> bool {
+        if cfg!(debug_assertions) {
+            match val {
+                0 => false,
+                1 => true,
+                _ => panic!("invalid bool discriminant"),
+            }
+        } else {
+            val != 0
+        }
+    }
+    pub use alloc_crate::boxed::Box;
+    #[cfg(target_arch = "wasm32")]
+    pub fn run_ctors_once() {
+        wit_bindgen_rt::run_ctors_once();
+    }
     pub fn as_i64<T: AsI64>(t: T) -> i64 {
         t.as_i64()
     }
@@ -563,6 +1214,7 @@ mod _rt {
             self as i64
         }
     }
+    pub use alloc_crate::alloc;
     extern crate alloc as alloc_crate;
 }
 /// Generates `#[no_mangle]` functions to export the specified type as the
@@ -584,33 +1236,44 @@ mod _rt {
 #[allow(unused_macros)]
 #[doc(hidden)]
 #[macro_export]
-macro_rules! __export_plugin_impl {
+macro_rules! __export_vfs_plugin_impl {
     ($ty:ident) => {
         self::export!($ty with_types_in self);
     };
     ($ty:ident with_types_in $($path_to_types_root:tt)*) => {
         $($path_to_types_root)*::
-        exports::junkyard_vfs::wasm_local_fs::vfs::__export_junkyard_vfs_wasm_local_fs_vfs_cabi!($ty
-        with_types_in $($path_to_types_root)*::
-        exports::junkyard_vfs::wasm_local_fs::vfs);
+        exports::junkyard_vfs::vfs_plugin::vfs::__export_junkyard_vfs_vfs_plugin_vfs_cabi!($ty
+        with_types_in $($path_to_types_root)*:: exports::junkyard_vfs::vfs_plugin::vfs);
     };
 }
 #[doc(inline)]
-pub use __export_plugin_impl as export;
+pub use __export_vfs_plugin_impl as export;
 #[cfg(target_arch = "wasm32")]
-#[link_section = "component-type:wit-bindgen:0.36.0:junkyard-vfs:wasm-local-fs:plugin:encoded world"]
+#[link_section = "component-type:wit-bindgen:0.36.0:junkyard-vfs:vfs-plugin:vfs-plugin:encoded world"]
 #[doc(hidden)]
-pub static __WIT_BINDGEN_COMPONENT_TYPE: [u8; 419] = *b"\
-\0asm\x0d\0\x01\0\0\x19\x16wit-component-encoding\x04\0\x07\xa6\x02\x01A\x02\x01\
-A\x02\x01B\x11\x01m\x04\x04file\x06folder\x04link\x07unknown\x04\0\x04kind\x03\0\
-\0\x01r\x02\x04kind\x01\x04sizew\x04\0\x04stat\x03\0\x02\x04\0\x0afilesystem\x03\
-\x01\x01h\x04\x01ps\x01j\x01\x06\x01s\x01@\x02\x04self\x05\x04paths\0\x07\x04\0\x1b\
-[method]filesystem.read-dir\x01\x08\x01j\x01\x03\x01s\x01@\x02\x04self\x05\x04pa\
-ths\0\x09\x04\0\x17[method]filesystem.stat\x01\x0a\x01i\x04\x01j\x01\x0b\0\x01@\0\
-\0\x0c\x04\0\x04init\x01\x0d\x04\0\x1ejunkyard-vfs:wasm-local-fs/vfs\x05\0\x04\0\
-!junkyard-vfs:wasm-local-fs/plugin\x04\0\x0b\x0c\x01\0\x06plugin\x03\0\0\0G\x09p\
-roducers\x01\x0cprocessed-by\x02\x0dwit-component\x070.220.1\x10wit-bindgen-rust\
-\x060.36.0";
+pub static __WIT_BINDGEN_COMPONENT_TYPE: [u8; 997] = *b"\
+\0asm\x0d\0\x01\0\0\x19\x16wit-component-encoding\x04\0\x07\xe4\x06\x01A\x02\x01\
+A\x05\x01B\x0f\x04\0\x0dabsolute-path\x03\x01\x01h\0\x01ps\x01@\x01\x04self\x01\0\
+\x02\x04\0\x20[method]absolute-path.components\x01\x03\x01@\x01\x04self\x01\0\x7f\
+\x04\0\x1d[method]absolute-path.is-root\x01\x04\x01i\0\x01@\x01\x04self\x01\0\x05\
+\x04\0\x1c[method]absolute-path.parent\x01\x06\x01@\x01\x04self\x01\0s\x04\0\x1f\
+[method]absolute-path.file-name\x01\x07\x04\0\x1a[method]absolute-path.path\x01\x07\
+\x01@\x01\x01ss\0\x05\x04\0\x14create-absolute-path\x01\x08\x03\0\x20junkyard-vf\
+s:vfs-plugin/vfs-host\x05\0\x02\x03\0\0\x0dabsolute-path\x01B$\x02\x03\x02\x01\x01\
+\x04\0\x0dabsolute-path\x03\0\0\x01q\x03\x05start\x01w\0\x07current\x01x\0\x03en\
+d\x01x\0\x04\0\x04seek\x03\0\x02\x01m\x04\x04file\x06folder\x04link\x07unknown\x04\
+\0\x04kind\x03\0\x04\x01r\x02\x04kind\x05\x04sizew\x04\0\x04stat\x03\0\x06\x04\0\
+\x04file\x03\x01\x04\0\x0afilesystem\x03\x01\x01h\x08\x01p}\x01j\x01w\x01s\x01@\x02\
+\x04self\x0a\x04data\x0b\0\x0c\x04\0\x11[method]file.read\x01\x0d\x04\0\x12[meth\
+od]file.write\x01\x0d\x01@\x02\x04self\x0a\x01s\x03\0\x0c\x04\0\x11[method]file.\
+seek\x01\x0e\x01h\x09\x01h\x01\x01i\x01\x01p\x11\x01j\x01\x12\x01s\x01@\x02\x04s\
+elf\x0f\x04path\x10\0\x13\x04\0\x1b[method]filesystem.read-dir\x01\x14\x01j\x01\x07\
+\x01s\x01@\x02\x04self\x0f\x04path\x10\0\x15\x04\0\x17[method]filesystem.stat\x01\
+\x16\x01i\x08\x01j\x01\x17\x01s\x01@\x02\x04self\x0f\x04path\x11\0\x18\x04\0\x17\
+[method]filesystem.open\x01\x19\x01i\x09\x01j\x01\x1a\0\x01@\0\0\x1b\x04\0\x04in\
+it\x01\x1c\x04\0\x1bjunkyard-vfs:vfs-plugin/vfs\x05\x02\x04\0\"junkyard-vfs:vfs-\
+plugin/vfs-plugin\x04\0\x0b\x10\x01\0\x0avfs-plugin\x03\0\0\0G\x09producers\x01\x0c\
+processed-by\x02\x0dwit-component\x070.220.1\x10wit-bindgen-rust\x060.36.0";
 #[inline(never)]
 #[doc(hidden)]
 pub fn __link_custom_section_describing_imports() {

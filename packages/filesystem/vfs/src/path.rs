@@ -59,6 +59,11 @@ impl AbsolutePath {
         self.components().last().unwrap_or(&"/")
     }
 
+    pub fn path(&self) -> &str {
+        // if components is empty,this means that the path is root
+        &self.path
+    }
+
     pub fn parent(&self) -> AbsolutePath {
         if self.is_root() {
             self.clone()

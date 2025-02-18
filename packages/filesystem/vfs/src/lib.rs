@@ -1,16 +1,12 @@
+pub use wasm_vfs_api::{Kind, Seek, Stat};
 
+pub type VfsResult<T> = Result<T, String>;
 
-use std::io::SeekFrom;
-
-pub type VfsResult<T> = anyhow::Result<T>;
-
-mod dir_entry;
 mod path;
-mod stat;
+// mod stat;
 
-pub use dir_entry::DirEntry;
 pub use path::AbsolutePath;
-pub use stat::{Kind, Stat};
+// pub use stat::{Kind, Stat};
 
 #[derive(Debug, Copy, Clone, PartialEq)]
 #[non_exhaustive]
@@ -77,7 +73,7 @@ impl OpenOptions {
 pub trait File {
     fn read(&mut self, buffer: &mut [u8]) -> VfsResult<u64>;
     fn write(&mut self, buffer: &[u8]) -> VfsResult<u64>;
-    fn seek(&mut self, from: SeekFrom) -> VfsResult<u64>;
+    fn seek(&mut self, from: Seek) -> VfsResult<u64>;
 }
 
 pub trait Vfs: Send + Sync {
@@ -87,7 +83,7 @@ pub trait Vfs: Send + Sync {
     fn stat(&self, path: &AbsolutePath) -> VfsResult<Stat>;
 
     // Folders
-    fn read_dir(&self, path: &AbsolutePath) -> VfsResult<Vec<DirEntry>>;
+    fn read_dir(&self, path: &AbsolutePath) -> VfsResult<Vec<AbsolutePath>>;
     fn create_dir(&self, path: &AbsolutePath) -> VfsResult<()>;
     fn create_dir_all(&self, path: &AbsolutePath) -> VfsResult<()>;
 

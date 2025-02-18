@@ -1,25 +1,42 @@
-use std::fs;
+use std::fs::{self};
 
-use vfs::{AbsolutePath, DirEntry, Kind, Stat, Vfs};
-use wasm_vfs::export_vfs;
+use wasm_vfs::{
+    create_absolute_path, export_vfs, AbsolutePath, File, FileResource, Filesystem, Kind, Seek,
+    Stat,
+};
 
-struct LocalVfs {}
+struct LocalFile;
 
-impl Vfs for LocalVfs {
-    fn open(
-        &self,
-        _path: &AbsolutePath,
-        _open_options: vfs::OpenOptions,
-    ) -> vfs::VfsResult<Box<dyn vfs::File>> {
+impl File for LocalFile {
+    fn read(&self, _data: Vec<u8>) -> Result<u64, String> {
         todo!()
     }
 
-    fn unlink(&self, _path: &AbsolutePath) -> vfs::VfsResult<()> {
+    fn write(&self, _data: Vec<u8>) -> Result<u64, String> {
         todo!()
     }
 
-    fn stat(&self, path: &AbsolutePath) -> vfs::VfsResult<vfs::Stat> {
-        let data = fs::metadata(path.as_str())?;
+    fn seek(&self, _s: Seek) -> Result<u64, String> {
+        todo!()
+    }
+}
+
+struct LocalVfs;
+
+impl Filesystem for LocalVfs {
+    fn read_dir(&self, path: &AbsolutePath) -> Result<Vec<AbsolutePath>, String> {
+        let entries = fs::read_dir(path.path()).map_err(|e| e.to_string())?;
+        let mut files = vec![];
+        for entry in entries {
+            if let Ok(entry) = entry {
+                files.push(create_absolute_path(&entry.path().to_string_lossy()));
+            }
+        }
+        Ok(files)
+    }
+
+    fn stat(&self, path: &AbsolutePath) -> Result<Stat, String> {
+        let data = fs::metadata(path.path()).map_err(|e| e.to_string())?;
         Ok(Stat {
             kind: if data.is_dir() {
                 Kind::Folder
@@ -34,30 +51,9 @@ impl Vfs for LocalVfs {
         })
     }
 
-    fn read_dir(&self, path: &AbsolutePath) -> vfs::VfsResult<Vec<DirEntry>> {
-        let entries = fs::read_dir(path.as_str())?;
-        let mut files = vec![];
-        for entry in entries {
-            if let Ok(entry) = entry {
-                files.push(DirEntry::new(AbsolutePath::new(
-                    entry.path().to_string_lossy(),
-                )));
-            }
-        }
-        Ok(files)
-    }
-
-    fn create_dir(&self, _path: &AbsolutePath) -> vfs::VfsResult<()> {
-        todo!()
-    }
-
-    fn create_dir_all(&self, _path: &AbsolutePath) -> vfs::VfsResult<()> {
-        todo!()
-    }
-
-    fn rename(&self, _from: &AbsolutePath, _to: &AbsolutePath) -> vfs::VfsResult<()> {
+    fn open(&self, _path: AbsolutePath) -> Result<FileResource, String> {
         todo!()
     }
 }
 
-export_vfs!(LocalVfs, LocalVfs {});
+export_vfs!(LocalVfs, LocalFile, LocalVfs);

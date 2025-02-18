@@ -9,3 +9,4 @@ rust-version.workspace = true
 [dependencies]
 anyhow = "1.0.95"
 regex = "1.10.2"
+wasm_vfs_api = { path="../../wasm_vfs_api" }

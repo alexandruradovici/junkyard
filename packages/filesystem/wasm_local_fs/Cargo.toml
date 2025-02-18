@@ -5,7 +5,6 @@ edition.workspace = true
 rust-version.workspace = true
 
 [dependencies]
-vfs = { path = "../vfs" }
 wasm_vfs = { path = "../wasm_vfs" }
 
 [lib]

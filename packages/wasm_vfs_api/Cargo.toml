@@ -1,0 +1,8 @@
+[package]
+name = "wasm_vfs_api"
+version = "0.1.0"
+edition.workspace = true
+rust-version.workspace = true
+
+[dependencies]
+wasmtime = { version = "29.0.1", default-features = false, features = ["runtime", "component-model"] }

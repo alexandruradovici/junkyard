@@ -4,13 +4,13 @@ members = [
     "packages/filesystem/local_fs",
     "packages/wasm",
     "packages/filesystem/wasm_local_fs",
-    "packages/filesystem/wasm_vfs",
+    "packages/filesystem/wasm_vfs", "packages/wasm_vfs_api",
 ]
 resolver = "2"
 
 [workspace.package]
 edition = "2021"
-rust-version = "1.81"
+rust-version = "1.83"
 
 [package]
 name = "junkyard"
