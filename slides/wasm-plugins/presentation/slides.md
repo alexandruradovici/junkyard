@@ -2,16 +2,11 @@
 # You can also start simply with 'default'
 theme: seriph
 aspectRatio: 16/9
-# random image from a curated Unsplash collection by Anthony
-# like them? see https://unsplash.com/collections/94734566/slidev
 background: ./auto.png
 # some information about your slides (markdown enabled)
 title: Building Software Extensions in Rust using WebAssembly Components
 info: |
-  ## Slidev Starter Template
-  Presentation slides for developers.
-
-  Learn more at [Sli.dev](https://sli.dev)
+  ## Building Software Extensions in Rust using WebAssembly Components
 # apply unocss classes to the current slide
 class: text-center
 # https://sli.dev/features/drawing

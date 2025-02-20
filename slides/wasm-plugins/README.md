@@ -1,11 +1,8 @@
-# Welcome to [Slidev](https://github.com/slidevjs/slidev)!
+# Welcome to slides
 
 To start the slide show:
 
-- `pnpm install`
-- `pnpm dev`
+- `pnp install`
+- `npm dev -- presentation/slides.md`
 - visit <http://localhost:3030>
 
-Edit the [slides.md](./slides.md) to see the changes.
-
-Learn more about Slidev at the [documentation](https://sli.dev/).
