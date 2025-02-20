@@ -1,11 +1,7 @@
+pub use wasm_vfs_api::AbsolutePath;
 pub use wasm_vfs_api::{Kind, Seek, Stat};
 
 pub type VfsResult<T> = Result<T, String>;
-
-mod path;
-// mod stat;
-
-pub use path::AbsolutePath;
 // pub use stat::{Kind, Stat};
 
 #[derive(Debug, Copy, Clone, PartialEq)]

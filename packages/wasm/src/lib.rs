@@ -1,11 +1,10 @@
 use anyhow::Result;
 use std::sync::MutexGuard;
 use std::{env, fs, sync::Mutex};
-use vfs::{AbsolutePath, Vfs};
-use wasm_vfs_api::exports::junkyard_vfs::vfs_plugin::vfs::AbsolutePath as WasmAbsolutePath;
+use vfs::Vfs;
 use wasm_vfs_api::{
     junkyard_vfs::vfs_plugin::vfs_host::{Host, HostAbsolutePath},
-    VfsPlugin,
+    VfsPlugin, AbsolutePath
 };
 use wasmtime::{
     component::{Component, Linker, Resource, ResourceAny},
@@ -16,7 +15,6 @@ use wasmtime_wasi::{DirPerms, FilePerms, ResourceTable, WasiCtx, WasiView};
 struct WasmVfsState {
     ctx: WasiCtx,
     table: ResourceTable,
-    absolute_paths: Vec<Option<AbsolutePath>>,
 }
 
 impl WasmVfsState {
@@ -29,46 +27,15 @@ impl WasmVfsState {
                 .unwrap()
                 .build(),
             table: ResourceTable::new(),
-            absolute_paths: vec![],
         }
     }
 
-    fn create_absolute_path_resource(&mut self, path: AbsolutePath) -> u32 {
-        let id = if let Some(index) = self.absolute_paths.iter().position(|empty| empty.is_none()) {
-            self.absolute_paths[index] = Some(path);
-            index as u32
-        } else {
-            self.absolute_paths.push(Some(path));
-            (self.absolute_paths.len() - 1) as u32
-        };
-        // eprintln!(
-        //     "create {} / {}",
-        //     self.absolute_paths.iter().fold(0, |v, e| {
-        //         if e.is_some() {
-        //             v + 1
-        //         } else {
-        //             v
-        //         }
-        //     }),
-        //     self.absolute_paths.len()
-        // );
-        id
+    fn create_absolute_path_resource(&mut self, path: AbsolutePath) -> Resource<AbsolutePath> {
+        self.table.push(path).unwrap()
     }
 
-    fn take_absolute_path(&mut self, id: u32) -> Option<AbsolutePath> {
-        let a = self.absolute_paths[id as usize].take();
-        // eprintln!(
-        //     "drop {} / {}",
-        //     self.absolute_paths.iter().fold(0, |v, e| {
-        //         if e.is_some() {
-        //             v + 1
-        //         } else {
-        //             v
-        //         }
-        //     }),
-        //     self.absolute_paths.len()
-        // );
-        a
+    fn take_absolute_path(&mut self, path: Resource<AbsolutePath>) -> Option<AbsolutePath> {
+        self.table.delete(path).ok()
     }
 }
 
@@ -94,8 +61,8 @@ impl WasmVfs {
 }
 
 impl HostAbsolutePath for WasmVfsState {
-    fn components(&mut self, self_: Resource<WasmAbsolutePath>) -> Vec<String> {
-        self.absolute_paths[self_.rep() as usize]
+    fn components(&mut self, self_: Resource<AbsolutePath>) -> Vec<String> {
+        self.table.get(&self_)
             .as_ref()
             .map(|path| {
                 path.components()
@@ -106,48 +73,45 @@ impl HostAbsolutePath for WasmVfsState {
             .unwrap()
     }
 
-    fn is_root(&mut self, self_: Resource<WasmAbsolutePath>) -> bool {
-        self.absolute_paths[self_.rep() as usize]
+    fn is_root(&mut self, self_: Resource<AbsolutePath>) -> bool {
+        self.table.get(&self_)
             .as_ref()
             .map(|path| path.is_root())
             .unwrap()
     }
 
-    fn parent(&mut self, self_: Resource<WasmAbsolutePath>) -> Resource<WasmAbsolutePath> {
-        let id = self.create_absolute_path_resource(
-            self.absolute_paths[self_.rep() as usize]
+    fn parent(&mut self, self_: Resource<AbsolutePath>) -> Resource<AbsolutePath> {
+        self.create_absolute_path_resource(
+            self.table.get(&self_)
                 .as_ref()
                 .map(|path| path.parent())
                 .unwrap(),
-        );
-        Resource::<WasmAbsolutePath>::new_own(id)
+        )
     }
 
-    fn file_name(&mut self, self_: Resource<WasmAbsolutePath>) -> String {
-        self.absolute_paths[self_.rep() as usize]
+    fn file_name(&mut self, self_: Resource<AbsolutePath>) -> String {
+        self.table.get(&self_)
             .as_ref()
             .map(|path| path.name().to_string())
             .unwrap()
     }
 
-    fn path(&mut self, self_: Resource<WasmAbsolutePath>) -> String {
-        self.absolute_paths[self_.rep() as usize]
+    fn path(&mut self, self_: Resource<AbsolutePath>) -> String {
+        self.table.get(&self_)
             .as_ref()
             .map(|path| path.path().to_string())
             .unwrap()
     }
 
-    fn drop(&mut self, rep: Resource<WasmAbsolutePath>) -> wasmtime::Result<()> {
-        self.take_absolute_path(rep.rep());
+    fn drop(&mut self, rep: Resource<AbsolutePath>) -> wasmtime::Result<()> {
+        self.take_absolute_path(rep);
         Ok(())
     }
 }
 
 impl Host for WasmVfsState {
-    fn create_absolute_path(&mut self, s: String) -> Resource<WasmAbsolutePath> {
-        Resource::<WasmAbsolutePath>::new_own(
-            self.create_absolute_path_resource(AbsolutePath::new(s)),
-        )
+    fn create_absolute_path(&mut self, s: String) -> Resource<AbsolutePath> {
+        self.create_absolute_path_resource(AbsolutePath::new(s))
     }
 }
 
@@ -166,7 +130,7 @@ impl Vfs for WasmVfs {
 
     fn stat(&self, path: &AbsolutePath) -> vfs::VfsResult<vfs::Stat> {
         let mut store = self.get_store();
-        let id = store.data_mut().create_absolute_path_resource(path.clone());
+        let path = store.data_mut().create_absolute_path_resource(path.clone());
         let ret = self
             .instance
             .junkyard_vfs_vfs_plugin_vfs()
@@ -174,15 +138,15 @@ impl Vfs for WasmVfs {
             .call_stat(
                 &mut *store,
                 self.vfs_plugin,
-                Resource::<WasmAbsolutePath>::new_borrow(id),
+                Resource::<AbsolutePath>::new_borrow(path.rep())
             );
-        store.data_mut().take_absolute_path(id);
+        store.data_mut().take_absolute_path(path);
         Ok(ret.map_err(|e| e.to_string())??)
     }
 
     fn read_dir(&self, path: &AbsolutePath) -> vfs::VfsResult<Vec<AbsolutePath>> {
         let mut store = self.get_store();
-        let id = store.data_mut().create_absolute_path_resource(path.clone());
+        let path = store.data_mut().create_absolute_path_resource(path.clone());
         let ret = self
             .instance
             .junkyard_vfs_vfs_plugin_vfs()
@@ -190,13 +154,13 @@ impl Vfs for WasmVfs {
             .call_read_dir(
                 &mut *store,
                 self.vfs_plugin,
-                Resource::<WasmAbsolutePath>::new_borrow(id),
+                Resource::<AbsolutePath>::new_borrow(path.rep()),
             );
-        store.data_mut().take_absolute_path(id);
+        store.data_mut().take_absolute_path(path);
         Ok(ret
             .map_err(|e| e.to_string())??
             .into_iter()
-            .map(|s| store.data_mut().take_absolute_path(s.rep()).unwrap())
+            .map(|s| store.data_mut().take_absolute_path(s).unwrap())
             .collect())
     }
 

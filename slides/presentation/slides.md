@@ -22,7 +22,8 @@ lineNumbers: true
 
 # Building Software Extensions in Rust using WebAssembly Components
 
-Alexandru Radovici
+Alexandru Radovici\
+(github: alexandruradovici)
 
 ---
 src: ./plugin.md

@@ -8,7 +8,7 @@ steps one can follow to build an extension using the WASM Component Model
 layout: default
 ---
 # junkyard
-the classical commander
+the classical commander - https://github.com/alexandruradovici/junkyard
 
 <div align="center">
 <img src="./junkyard.png" class="h-100">
@@ -63,7 +63,7 @@ world vfs-plugin {
 # Step 2 - create an API create
 that exports the data types, resources and interfaces
 
-```rust {1,10|3|4-9|12|all}
+```rust {1,15|3|4-9|10-12|all}
 wasmtime::component::bindgen!({
     async: false,
     path: "wit/vfs.wit",
@@ -72,7 +72,10 @@ wasmtime::component::bindgen!({
         PartialEq,
         Ord,
         PartialOrd
-    ]
+    ],
+    with: {
+        "junkyard-vfs:vfs-plugin/vfs-host/absolute-path": AbsolutePath
+    }
 });
 
 pub use exports::junkyard_vfs::vfs_plugin::vfs::{Kind, Seek, Stat};
@@ -145,7 +148,37 @@ impl Vfs for WasmVfs {
 
 ---
 
-# Step 5 - Define a plugin API crate
+
+# Step 5 - Manage Resources
+
+```rust {3|10-15|17-20|all}
+pub struct WasmVfs {
+    /* ... */
+    vfs_plugin: ResourceAny,
+}
+
+impl HostAbsolutePath for WasmVfsState {
+    fn components(&mut self, self_: Resource<AbsolutePath>) -> Vec<String> {/* ... */}
+    fn is_root(&mut self, self_: Resource<AbsolutePath>) -> bool {/* ... */}
+    fn parent(&mut self, self_: Resource<AbsolutePath>) -> Resource<AbsolutePath> {/* ... */}
+    fn file_name(&mut self, self_: Resource<AbsolutePath>) -> String {
+        self.table.get(&self_)
+            .as_ref()
+            .map(|path| path.name().to_string())
+            .unwrap()
+    }
+    fn path(&mut self, self_: Resource<AbsolutePath>) -> String {/* ... */}
+    fn drop(&mut self, rep: Resource<AbsolutePath>) -> wasmtime::Result<()> {
+        self.take_absolute_path(rep);
+        Ok(())
+    }
+}
+```
+
+---
+---
+
+# Step 6 - Define a plugin API crate
 just make the code look nicer for plugin implementers
 
 ```rust {7|1-5|9-15|7,13}
@@ -175,7 +208,7 @@ macro_rules! export_vfs {
 
 ---
 ---
-# Step 6 - Write the plugin <v-click> ... in Rust </v-click>
+# Step 7 - Write the plugin <v-click> ... in Rust </v-click>
 
 ```rust
 use wasm_vfs::{
@@ -235,7 +268,7 @@ export const vfs = {
 
 ---
 ---
-# Step 7 - Implement a cache system
+# Step 8 - Implement a cache system
 `wasmtime` is slow on compiling and components can be large
 
 junkyard's plugins take 5 seconds or more to compile
