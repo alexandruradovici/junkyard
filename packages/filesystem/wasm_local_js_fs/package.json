@@ -1,0 +1,7 @@
+{
+  "dependencies": {
+    "@bytecodealliance/jco": "^1.9.1",
+    "@bytecodealliance/preview2-shim": "^0.17.1",
+    "typescript": "^5.7.3"
+  }
+}

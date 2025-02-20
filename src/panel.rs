@@ -45,7 +45,12 @@ impl TableViewItem<Data> for File {
     fn to_column(&self, column: Data) -> String {
         match column {
             Data::Name => self.name.clone(),
-            Data::Kind => format!("{:?}", self.kind),
+            Data::Kind => format!("{}", match self.kind {
+                                    Kind::File => "file",
+                                    Kind::Folder => "<dir>",
+                                    Kind::Link => "link",
+                                    Kind::Unknown => "N/A",
+                                }),
             Data::Len => format!("{}", self.len),
         }
     }
@@ -56,14 +61,28 @@ impl TableViewItem<Data> for File {
     {
         match column {
             Data::Name => self.name.cmp(&other.name),
-            Data::Kind => self.kind.cmp(&other.kind),
+            Data::Kind => if self.name == ".." {
+                            Ordering::Less
+                        } else if matches!(self.kind, Kind::Folder) && !matches!(other.kind, Kind::Folder) {
+                            Ordering::Less
+                        } else if !matches!(self.kind, Kind::Folder) && matches!(other.kind, Kind::Folder) {
+                            Ordering::Greater
+                        } else {
+                            match column {
+                                Data::Name => self.name.cmp(&other.name),
+                                Data::Kind => self.kind.cmp(&other.kind),
+                                Data::Len => self.len.cmp(&other.len),
+                            }
+                        },
             Data::Len => self.len.cmp(&other.len),
         }
     }
 }
 
 fn list_files(provider: &dyn Vfs, path: &AbsolutePath) -> VfsResult<Vec<File>> {
+    // let start_time = std::time::Instant::now();
     let entries = provider.read_dir(&path)?;
+    // let entries_time = std::time::Instant::now();
     let mut files = entries
         .into_iter()
         .map(|entry| {
@@ -81,6 +100,8 @@ fn list_files(provider: &dyn Vfs, path: &AbsolutePath) -> VfsResult<Vec<File>> {
             File::new("..".to_string(), path.clone(), Kind::Folder, 0),
         );
     }
+    // let list_time = std::time::Instant::now();
+    // eprintln!("{}: entries {:?}, list {:?}", path.path(), entries_time-start_time, list_time-entries_time);
     Ok(files)
 }
 
@@ -152,5 +173,6 @@ pub fn init_panel(
         });
     });
     table.set_items(items);
+    table.set_selected_row(0);
     table
 }

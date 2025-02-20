@@ -7,6 +7,4 @@ rust-version.workspace = true
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-anyhow = "1.0.95"
-regex = "1.10.2"
 wasm_vfs_api = { path="../../wasm_vfs_api" }

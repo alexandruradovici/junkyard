@@ -24,9 +24,10 @@ fn main() {
 
     siv.set_autorefresh(true);
 
-    let provider_left = Arc::new(LocalFileSystem {});
+    // let provider_left = Arc::new(LocalFileSystem {});
+    let provider_left = Arc::new(load_wasm_vfs(&AbsolutePath::new("/Users/alexandru/programe/Wylio/junkyard/packages/filesystem/wasm_local_js_fs/component.wasm"), &AbsolutePath::new("/")).unwrap());
     // let provider_right = Arc::new(LocalFileSystem {});
-    let provider_right = Arc::new(load_wasm_vfs(&AbsolutePath::new("/Users/alexandru/programe/Wylio/junkyard/target/wasm32-wasip1/release/wasm_local_fs.wasm"), &AbsolutePath::new("/Users/alexandru")).unwrap());
+    let provider_right = Arc::new(load_wasm_vfs(&AbsolutePath::new("/Users/alexandru/programe/Wylio/junkyard/target/wasm32-wasip2/release/wasm_local_fs.wasm"), &AbsolutePath::new("/")).unwrap());
 
     let left = init_panel("left", provider_left, AbsolutePath::from("/"));
     let right = init_panel("right", provider_right, AbsolutePath::from("/"));

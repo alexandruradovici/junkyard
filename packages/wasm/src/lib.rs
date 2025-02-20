@@ -41,33 +41,33 @@ impl WasmVfsState {
             self.absolute_paths.push(Some(path));
             (self.absolute_paths.len() - 1) as u32
         };
-        eprintln!(
-            "create {} / {}",
-            self.absolute_paths.iter().fold(0, |v, e| {
-                if e.is_some() {
-                    v + 1
-                } else {
-                    v
-                }
-            }),
-            self.absolute_paths.len()
-        );
+        // eprintln!(
+        //     "create {} / {}",
+        //     self.absolute_paths.iter().fold(0, |v, e| {
+        //         if e.is_some() {
+        //             v + 1
+        //         } else {
+        //             v
+        //         }
+        //     }),
+        //     self.absolute_paths.len()
+        // );
         id
     }
 
     fn take_absolute_path(&mut self, id: u32) -> Option<AbsolutePath> {
         let a = self.absolute_paths[id as usize].take();
-        eprintln!(
-            "drop {} / {}",
-            self.absolute_paths.iter().fold(0, |v, e| {
-                if e.is_some() {
-                    v + 1
-                } else {
-                    v
-                }
-            }),
-            self.absolute_paths.len()
-        );
+        // eprintln!(
+        //     "drop {} / {}",
+        //     self.absolute_paths.iter().fold(0, |v, e| {
+        //         if e.is_some() {
+        //             v + 1
+        //         } else {
+        //             v
+        //         }
+        //     }),
+        //     self.absolute_paths.len()
+        // );
         a
     }
 }

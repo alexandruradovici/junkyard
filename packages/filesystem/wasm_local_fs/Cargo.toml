@@ -10,13 +10,6 @@ wasm_vfs = { path = "../wasm_vfs" }
 [lib]
 crate-type = ["cdylib"]
 
-[profile.release]
-codegen-units = 1
-opt-level = "s"
-debug = false
-strip = true
-lto = true
-
 [package.metadata.component]
 package = "junkyard-vfs:wasm-local-fs"
 
